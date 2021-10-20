@@ -1,5 +1,3 @@
-// Initialize button with user's preferred color
-
 function init () {
     let saveButton = document.getElementById("save-button");
 
@@ -46,10 +44,20 @@ function init () {
                     doc.documentElement.appendChild(style);
             }
             addCssByStyle(`
+                /* 公众号正文内容区域 */
                 .rich_media_area_primary_inner {
                     width: ${curWidth}%!important;
                     max-width: ${curWidth}%!important;
                 }
+                /* 公众号扫码关注的框 */
+                .qr_code_pc_inner{
+                    display: none !important;
+                }
+                /* 壹伴插件 */
+                .mpa-plugin-data-enhance {
+                    display: none !important;
+                }
+                
             `)
         });
     }
