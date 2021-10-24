@@ -12,18 +12,29 @@ function init () {
     $('#reset-button').bind('click', function (){
         $("#mode-select").find('input[type=radio]').attr("checked", false); 
         $("#mode-select").find('input[type=radio][value="default"]').prop("checked", true); 
-        change();
+        reset();
     })
 
-    // 修改操作
-    const change = async (type = defaultMode) => {
+    // 通用处理函数
+    const handle = async (fn) => {
         let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-        chrome.storage.sync.set({ mode: type });
 
         chrome.scripting.executeScript({
             target: { tabId: tab.id },
-            function: setPageMode
+            function: fn
         });
+
+    }
+
+    // 修改操作
+    const change = async (type = defaultMode) => {
+        chrome.storage.sync.set({ mode: type });
+        handle(setPageMode);
+    }
+
+    // 重置操作
+    const reset = async (type = defaultMode) => {
+        handle(resetPage);
     }
 
 
@@ -184,6 +195,13 @@ function init () {
                 addCssByStyle(cssStyle);
             }
         });
+    }
+
+    function resetPage() {
+        const defaultStyleFlag = "CHROME_PLUGIN_MP_WEIXIN";
+        const element = document.querySelector('#' + defaultStyleFlag);
+        element && element.remove();
+
     }
 }
 
