@@ -2,17 +2,25 @@ function init () {
     const defaultMode = 'default'; // 默认选中模式
 
     // 绑定单选按钮事件，修改配置
-    $('#mode-select').find('input[type="radio"]').bind('click', function(){
+    $('#select-mode').find('input[type="radio"]').bind('click', function(){
         const value = $(this).attr('value')
-        change(value);
+        chrome.storage.sync.set({ mode: type });
+        handle(setPageMode);
     })
-
 
     // 重置操作
     $('#reset-button').bind('click', function (){
-        $("#mode-select").find('input[type=radio]').attr("checked", false); 
-        $("#mode-select").find('input[type=radio][value="default"]').prop("checked", true); 
-        reset();
+        $("#select-mode").find('input[type=radio]').attr("checked", false); 
+        $("#select-mode").find('input[type=radio][value="default"]').prop("checked", true); 
+        handle(resetPage);
+    })
+
+    // 黑夜模式开关
+    $('#viewMode').bind('click', function(){
+        const value = $(this)[0].checked;
+        chrome.storage.sync.set({ isDarkMode: value });
+        console.log('[viewMode]', value)
+        handle(setViewMode);
     })
 
     // 通用处理函数
@@ -23,20 +31,7 @@ function init () {
             target: { tabId: tab.id },
             function: fn
         });
-
     }
-
-    // 修改操作
-    const change = async (type = defaultMode) => {
-        chrome.storage.sync.set({ mode: type });
-        handle(setPageMode);
-    }
-
-    // 重置操作
-    const reset = async (type = defaultMode) => {
-        handle(resetPage);
-    }
-
 
     function setPageMode() {
         const defaultStyleFlag = "CHROME_PLUGIN_MP_WEIXIN";
@@ -147,14 +142,9 @@ function init () {
                 style.setAttribute("type", "text/css");
                 style.setAttribute("id", defaultStyleFlag);
 
-                if (style.styleSheet) {// IE 
-                    style.styleSheet.cssText = cssString;
-                } else {// w3c 
-                    var cssText = doc.createTextNode(cssString);
-                    style.appendChild(cssText);
-                }
-
-                var heads = doc.getElementsByTagName("head");
+                const cssText = doc.createTextNode(cssString);
+                style.appendChild(cssText);
+                const heads = doc.getElementsByTagName("head");
                 if (heads.length)
                     heads[0].appendChild(style);
                 else
@@ -201,7 +191,43 @@ function init () {
         const defaultStyleFlag = "CHROME_PLUGIN_MP_WEIXIN";
         const element = document.querySelector('#' + defaultStyleFlag);
         element && element.remove();
+    }
 
+    function setViewMode() {
+        const defaultStyleFlag = "CHROME_PLUGIN_MP_WEIXIN_DARK";
+        const darkStyle = `
+            html {
+                transition: filter 300ms linear;
+                -webkit-transition: filter 300ms linear;
+                filter: invert(1) hue-rotate(180deg);
+            }
+        `;
+
+        chrome.storage.sync.get("isDarkMode", params => {
+            const { isDarkMode } = params;
+            function addCssByStyle(cssString) {
+                const doc = document, style = doc.createElement("style");
+                style.setAttribute("type", "text/css");
+                style.setAttribute("id", defaultStyleFlag);
+
+                const cssText = doc.createTextNode(cssString);
+                style.appendChild(cssText);
+                const heads = doc.getElementsByTagName("head");
+                if (heads.length)
+                    heads[0].appendChild(style);
+                else
+                    doc.documentElement.appendChild(style);
+            }
+            const pluginStyleTag = document.getElementById(defaultStyleFlag)
+            if(isDarkMode){
+                if(pluginStyleTag){
+                    pluginStyleTag.remove();
+                }
+                addCssByStyle(darkStyle);
+            }else {
+                pluginStyleTag.remove();
+            }
+        })
     }
 }
 
