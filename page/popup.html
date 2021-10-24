@@ -11,17 +11,45 @@
 </head>
 
 <body>
-    <div class="container">
-        <div>显示模式：</div>
-        <div>
-            <form>
-                <input type="radio" name="width" value="default" checked>默认
-                <input type="radio" name="width" value="width">宽屏
-                <input type="radio" name="width" value="full">全屏
-            </form>
+    <div class="body">
+        <div class="header">文章阅读器配置</div>
+        <div class="container">
+            <div class="item">
+                <div class="options-header"> 🖥显示模式：</div>
+                <div class="options" id="mode-select">
+                    <div class="option">
+                        <label for="width_default">
+                            <input type="radio" id="width_default" name="width" value="default" checked>默认
+                        </label>
+                    </div>
+                    <div class="option">
+                        <label for="width_width">
+                            <input type="radio" id="width_width" name="width" value="width">宽屏(75%)
+                        </label>
+                    </div>
+                    <div class="option">
+                        <label for="width_full">
+                            <input type="radio" id="width_full" name="width" value="full">全屏(100%)
+                        </label>
+                    </div>
+                </div>
+                <div class="handle-container">
+                    <!-- <button id="save-button">设置</button> -->
+                    <button id="reset-button">重置</button>
+                </div>
+            </div>
         </div>
-        <div class="handle-container">
-            <button id="save-button">保存</button>
+        <div class="tips">
+            <div>📕支持平台：
+                <a target="_blank" href="https://mp.weixin.qq.com/s/N-G49hpphvbUy8eD9xKO0w">微信公众号</a>、
+                <a target="_blank" href="https://juejin.cn/post/6846687584710557710">掘金</a>、
+                <a target="_blank" href="https://zhuanlan.zhihu.com/p/149905967">知乎</a>、
+                <a target="_blank" href="https://segmentfault.com/a/1190000023091637">思否</a>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="left">🤠作者：<a target="_blank" href="https://www.pingan8787.com">pingan8787</a></div>
+            <div class="right">🎊微信公众号：<a target="_blank" href="https://mp.weixin.qq.com/s/N-G49hpphvbUy8eD9xKO0w">前端自习课</a></div>
         </div>
     </div>
 </body>

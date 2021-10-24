@@ -1,4 +1,4 @@
-let defaultMode = 'default';
+const defaultMode = 'default';
 
 chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.sync.get("mode", params => {
