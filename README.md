@@ -11,6 +11,19 @@ transition: filter 300ms linear;
 filter: invert(1) hue-rotate(180deg);
 ```
 
+## 拓展：隐藏百度广告
+```js
+setInterval(() => {
+    try{
+        Array.from(
+            document.querySelectorAll('#content_left>div'))
+            .forEach(el => 
+                />广告</.test(el.innerHTML) && el.parentNode.removeChild(el)
+        )
+    } catch(e){}
+}, 1000)
+```
+
 ## TODO
 
 [x] 支持掘金、知乎、CSDN等平台

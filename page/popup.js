@@ -4,7 +4,7 @@ function init () {
     // 绑定单选按钮事件，修改配置
     $('#select-mode').find('input[type="radio"]').bind('click', function(){
         const value = $(this).attr('value')
-        chrome.storage.sync.set({ mode: type });
+        chrome.storage.sync.set({ mode: value || defaultMode });
         handle(setPageMode);
     })
 
@@ -19,8 +19,7 @@ function init () {
     $('#viewMode').bind('click', function(){
         const value = $(this)[0].checked;
         chrome.storage.sync.set({ isDarkMode: value });
-        console.log('[viewMode]', value)
-        handle(setViewMode);
+        handle(setDarkMode);
     })
 
     // 通用处理函数
@@ -135,7 +134,6 @@ function init () {
         }
         chrome.storage.sync.get("mode", params => {
             const { mode = "default" } = params;
-            console.log('[params]', params, window.location.href)
 
             function addCssByStyle(cssString) {
                 const doc = document, style = doc.createElement("style");
@@ -193,7 +191,7 @@ function init () {
         element && element.remove();
     }
 
-    function setViewMode() {
+    function setDarkMode() {
         const defaultStyleFlag = "CHROME_PLUGIN_MP_WEIXIN_DARK";
         const darkStyle = `
             html {
