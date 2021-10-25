@@ -4,7 +4,7 @@ function init () {
     // 绑定单选按钮事件，修改配置
     $('#select-mode').find('input[type="radio"]').bind('click', function(){
         const value = $(this).attr('value')
-        chrome.storage.sync.set({ mode: value || defaultMode });
+        chrome.storage.local.set({ mode: value || defaultMode });
         handle(setPageMode);
     })
 
@@ -18,7 +18,7 @@ function init () {
     // 黑夜模式开关
     $('#viewMode').bind('click', function(){
         const value = $(this)[0].checked;
-        chrome.storage.sync.set({ isDarkMode: value });
+        chrome.storage.local.set({ isDarkMode: value });
         handle(setDarkMode);
     })
 
@@ -39,10 +39,10 @@ function init () {
             width: "75%",
             full: "100%"
         }
+        // 替换规则
         const urlRule = {
             juejin: {
                 url: 'https://juejin.cn/',
-                default: '.container.main-container', // 设置默认值的时候的参考元素
                 css: width => {
                     return `
                         .container.main-container {
@@ -50,19 +50,17 @@ function init () {
                             max-width: ${width}!important;
                         }
                         .main-area {
-                            width: ${width}!important;
-                            max-width: ${width}!important;
+                            width: 100%!important;
+                            max-width: 100%!important;
                         }
                         .sidebar {
                             display: none;
                         }
-                        
                     `
                 }
             },
             mp: {
                 url: 'https://mp.weixin.qq.com/s/',
-                default: '.rich_media_area_primary_inner', 
                 css: width => `
                     .rich_media_area_primary_inner {
                         width: ${width}!important;
@@ -76,12 +74,10 @@ function init () {
                     .mpa-plugin-data-enhance {
                         display: none !important;
                     }
-                    
                 `
             },
             csdn: {
                 url: 'https://blog.csdn.net/',
-                default: '#mainBox', 
                 css: width => `
                     #mainBox {
                         width: ${width}!important;
@@ -99,7 +95,6 @@ function init () {
             },
             sf: {
                 url: 'https://segmentfault.com/',
-                default: '.article-content.container', 
                 css: width => `
                     .article-content.container {
                         width: ${width}!important;
@@ -113,7 +108,6 @@ function init () {
             },
             zhihu: {
                 url: 'https://zhuanlan.zhihu.com/p/',
-                default: '.Post-Main .Post-Header', 
                 css: width => `
                     .TitleImage,
                     .Post-Main .Post-Header,
@@ -130,9 +124,26 @@ function init () {
                         right: 0;
                     }
                 `
+            },
+            github: {
+                url: 'https://github.com/',
+                css: width => `
+                    .new-discussion-timeline {
+                        width: ${width}!important;
+                        max-width: ${width}!important;
+                    }
+                    .gutter-condensed > div:first-child,
+                    .markdown-body {
+                        width: 100%!important;
+                        max-width: 100%!important;
+                    }
+                    .gutter-condensed > div:last-child {
+                        display: none !important;
+                    }
+                `
             }
         }
-        chrome.storage.sync.get("mode", params => {
+        chrome.storage.local.get("mode", params => {
             const { mode = "default" } = params;
 
             function addCssByStyle(cssString) {
@@ -160,13 +171,6 @@ function init () {
                 }
                 return result;
             }
-            // 获取默认样式
-            function getDefaultStyle(sel){
-                const element = document.querySelector(sel);
-                const defaultEleStyle = window.getComputedStyle(element);
-                const { width } = defaultEleStyle;
-                widthMap.default = width;
-            }
             // 先判断当前是否已经创建了该 style 标签
             // 如果已经创建，则先删除在创建
             // 否则直接创建
@@ -176,10 +180,7 @@ function init () {
             }
             const ruleConfig = getRule();
             if(ruleConfig){
-                // 先保存默认宽度下来，用来做重置的时候用
-                getDefaultStyle(ruleConfig.default);
                 const cssStyle = ruleConfig.css(widthMap[mode]);
-                // 添加样式
                 addCssByStyle(cssStyle);
             }
         });
@@ -201,7 +202,7 @@ function init () {
             }
         `;
 
-        chrome.storage.sync.get("isDarkMode", params => {
+        chrome.storage.local.get("isDarkMode", params => {
             const { isDarkMode } = params;
             function addCssByStyle(cssString) {
                 const doc = document, style = doc.createElement("style");
