@@ -107,6 +107,7 @@ function load() {
         const { DefaultStyleFlag } = constant;
         const element = document.querySelector("#" + DefaultStyleFlag);
         element && element.remove();
+        chrome.storage.local.set({ mode: GlobalConstant.DefaultMode });
     }
 
     function setDarkMode(args) {
