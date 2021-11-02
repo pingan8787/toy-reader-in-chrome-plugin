@@ -5,7 +5,7 @@ function load() {
         .find('input[type="radio"]')
         .bind("click", function () {
             const value = $(this).attr("value");
-            chrome.storage.local.set({ mode: value || DefaultMode });
+            chrome.storage.local.set({ mode: value || GlobalConstant.DefaultMode });
             handle(setPageMode);
         });
 
@@ -34,20 +34,19 @@ function load() {
             func: fn,
             args: [{
                 config: GlobalParams,
-                constant: Constant
+                constant: GlobalConstant
             }]
         });
     };
 
-    // 初始化读取缓存 - mode
+    // // 初始化读取缓存 - mode
     chrome.storage.local.get("mode", (params) => {
         $(`#select-mode input[type="radio"][value="${params.mode}"]`).click();
     })
 
-    // 初始化读取缓存 - dark
+    // // 初始化读取缓存 - dark
     chrome.storage.local.get("isDarkMode", (params) => {
-        $("#viewMode").attr('checked', !params.isDarkMode)
-        $("#viewMode").click();
+        $("#viewMode").attr('checked', params.isDarkMode)
     })
 
     function setPageMode(args) {

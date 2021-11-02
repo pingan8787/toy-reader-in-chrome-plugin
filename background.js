@@ -1,6 +1,7 @@
 const defaultMode = 'default';
 
 chrome.runtime.onInstalled.addListener(() => {
+    console.log(`插件加载完成`);
     // 初始化缓存规则
     chrome.storage.local.get("rule", params => {
         // 本地没有保存规则的时候，才设置

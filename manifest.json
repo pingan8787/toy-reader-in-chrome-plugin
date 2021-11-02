@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "Toy Reader - 专注阅读辅助工具",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Toy Reader，是一款帮助们专注阅读辅助工具，可以帮助你隔离不想看到的内容，设置内容阅读区域宽度，达到专注阅读的作用。",
 	"icons": {
 		"16": "./image/wx-16.png",
@@ -19,5 +19,17 @@
 		"48": "./image/wx-48.png",
 		"128": "./image/wx-128.png"
 	  }
-	}
+	},
+	"content_scripts": [
+	  {
+		"matches": [
+			"https://*.juejin.cn/post/*", 
+			"https://blog.csdn.net/*", 
+			"https://mp.weixin.qq.com/s/*", 
+			"https://segmentfault.com/a/*", 
+			"https://zhuanlan.zhihu.com/p/*"
+		],
+		"js": ["page/utils.js", "page/config.js", "page/constant.js", "content-script.js"]
+	  }
+	]
 }
