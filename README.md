@@ -39,6 +39,8 @@ setInterval(() => {
 - 增加读取本地缓存，设置一次后，其他相同地址打开都能读取已缓存的配置
 - 增加 BUG 反馈入口
 - 代码继续优化
+### v0.1.3 2021.11.03
+- 增加选择页面文本内容，以当前 url 生成 md 内容，如选择“ToyReader”，生成内容如：`[ToyReader](https://github.com/pingan8787)`
 
 ## TODO
 
