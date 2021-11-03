@@ -17,7 +17,6 @@ chrome.storage.local.get("mode", params => {
             rules: urlRule
         })
         addCssByStyle(css, DefaultStyleFlag)
-        console.log('[mode参数]', params, css)
     }
 })
 
@@ -34,3 +33,9 @@ chrome.storage.local.get("isDarkMode", params => {
         addCssByStyle(darkStyle, DefaultDarkStyleFlag)
     }
 })
+
+// 保存当前页面 URL，其他地方需要使用
+chrome.storage.local.set({
+    currentUrlHref: window.location.href,
+    currentUrlHost: window.location.host,
+});

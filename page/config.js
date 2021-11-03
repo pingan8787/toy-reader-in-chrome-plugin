@@ -101,6 +101,13 @@ const GlobalParams = {
         width: "75%",
         full: "100%",
     },
+    getRuleUrls: () => {
+        let result = [];
+        for(let { url } of Object.values(__plugin__urlRule)){
+            result.push(url)
+        }
+        return result;
+    },
     darkStyle: `
         html {
             transition: filter 300ms linear;

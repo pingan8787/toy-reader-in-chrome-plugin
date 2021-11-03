@@ -2,11 +2,26 @@ const defaultMode = 'default';
 
 chrome.runtime.onInstalled.addListener(() => {
     console.log(`插件加载完成`);
+    chrome.runtime.onInstalled.addListener(() => {
+        chrome.declarativeContent.onPageChanged.removeRules(undefined, () => {
+          chrome.declarativeContent.onPageChanged.addRules([
+            {
+              conditions: [
+                new chrome.declarativeContent.PageStateMatcher({
+                  pageUrl: {hostSuffix: 'https://juejin.cn/'},
+                })
+              ],
+              actions: [new chrome.declarativeContent.ShowAction()]
+            }
+          ]);
+        });
+      });
+
     // 初始化缓存规则
     chrome.storage.local.get("rule", params => {
         // 本地没有保存规则的时候，才设置
         if (!params) {
-            chrome.storage.local.set({"rule": urlRule});
+            chrome.storage.local.set({ "rule": urlRule });
         }
     })
 
@@ -26,16 +41,15 @@ chrome.contextMenus.create({
     contexts: ['selection'], // 只有当选中文字时才会出现此右键菜单
 });
 
-chrome.contextMenus.onClicked.addListener(async function(info, tab) {
+chrome.contextMenus.onClicked.addListener(async function (info, tab) {
     const { selectionText, pageUrl } = info;
     const copyText = `[${selectionText}](${pageUrl})`;
-    console.log('【ToyReader 复制内容】', info, copyText)
+    console.log('【ToyReader 复制内容】', copyText)
     try {
         await navigator.clipboard.writeText(copyText);
     } catch (error) {
-        function copyFun (args) {
+        function copyFun(args) {
             const { copyText } = args;
-            console.log('[ToyReader 复制操作]', copyText)
             const n = document.createElement("textarea");
             n.textContent = copyText;
             document.body.appendChild(n);
@@ -47,9 +61,16 @@ chrome.contextMenus.onClicked.addListener(async function(info, tab) {
         chrome.scripting.executeScript({
             target: { tabId: tab.id },
             func: copyFun,
-            args: [{copyText}]
+            args: [{ copyText }]
         });
     }
     // 注意不能使用location.href，因为location是属于background的window对象
     // chrome.tabs.create({url: 'https://www.baidu.com/s?ie=utf-8&wd=' + encodeURI(params.selectionText)});
 });
+
+function getCurrentPage () {
+    return {
+        window,
+        document
+    }
+}

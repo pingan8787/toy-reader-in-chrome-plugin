@@ -8,6 +8,7 @@
 		"48": "./image/wx-48.png",
 		"128": "./image/wx-128.png"
 	},
+	"homepage_url": "https://juejin.cn/user/1011206425950605",
 	"permissions": [
 		"declarativeContent",
 		"contextMenus",
@@ -15,7 +16,8 @@
 		"clipboardWrite",
 		"storage",
 		"activeTab",
-		"scripting"
+		"scripting",
+		"tabs"
 	],
 	"background": {
 	  "service_worker": "background.js"

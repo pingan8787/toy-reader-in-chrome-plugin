@@ -9,13 +9,13 @@
     <script src="./constant.js"></script>
     <script src="./config.js"></script>
     <script src="./utils.js"></script>
-    <script src="./popup.js"></script>
+    <script src="./popup.js" type=""></script>
     <script src="./assets/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
     <div class="body">
-        <div class="header">Toy Reader <a class="bug" target="_blank" href="https://github.com/pingan8787/toy-reader-in-chrome-plugin/issues" title="点击这里，给我提 Bug ~">？</a></div>
+        <div class="header">Toy Reader <span class="version">(v0.1.3)</span><a class="bug" target="_blank" href="https://github.com/pingan8787/toy-reader-in-chrome-plugin/issues" title="点击这里，给我提 Bug ~">？</a></div>
         <div class="container">
             <div class="item">
                 <div class="options-header line"> 
@@ -48,6 +48,26 @@
                 <div class="handle-container">
                     <!-- <button id="save-button">设置</button> -->
                     <button id="reset-button">重置</button>
+                </div>
+            </div>
+            <div class="item">
+                <div class="options-header line"> 
+                    <div class="label">🌓 添加网站规则：</div>
+                    <div class="handle">
+                        <img class="handle-rule-icon icon-show" src="./assets/icon/icon-show.png" title="添加规则">
+                        <img class="handle-rule-icon icon-hide" src="./assets/icon/icon-hide.png" title="添加规则">
+                    </div>
+                </div>
+                <div class="options-custom">
+                    <label for="custom_rule_url">
+                        <span>网址：</span>
+                        <input id="custom_rule_url" type="text" placeholder="输入网址，如：https://www.pingan8787.com">
+                    </label>
+                    <label for="custom_rule_content">
+                        <span>规则：</span>
+                        <input id="custom_rule_content" type="text" placeholder="输入容器 class 名称（可多选）如：.a,.b">
+                    </label>
+                    
                 </div>
             </div>
         </div>
