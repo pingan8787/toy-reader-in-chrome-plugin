@@ -1,5 +1,6 @@
-function load() {
-
+async function load() {
+    const { isValidUrl, tab } = await currentIsValidUrl();
+    if(!isValidUrl) return;
     // 绑定单选按钮事件，修改配置
     $("#select-mode")
         .find('input[type="radio"]')
@@ -26,9 +27,7 @@ function load() {
     });
 
     // 通用处理函数
-    const handle = async (fn) => {
-        let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
+    const handle = fn => {
         chrome.scripting.executeScript({
             target: { tabId: tab.id },
             func: fn,
@@ -140,6 +139,53 @@ function load() {
             }
         });
     }
+}
+
+function CustomRuleHandle() {
+    console.log('[element]', $(".handle-rule-icon"))
+    $(".handle-rule-icon").bind("click", function () {
+        console.log('[this]', this)
+    });
+}
+
+async function currentIsValidUrl () {
+    // https://developer.chrome.com/docs/extensions/reference/tabs/#method-query
+    const tabs = await chrome.tabs.query({ currentWindow: true, active: true })
+    const curTabs = tabs[0]; // 数据结构如下
+    const urls = GlobalParams.getRuleUrls();
+    let isValidUrl = false;
+    urls && urls.length > 0 && urls.forEach(item => {
+        if(curTabs.url.includes(item)){
+            isValidUrl = true;
+        }
+    })
+    console.log('[当前tab]', curTabs, urls, isValidUrl)
+    return {
+        isValidUrl,
+        url: curTabs.url,
+        tab: curTabs
+    };
+    /*
+        active: true
+        audible: false
+        autoDiscardable: true
+        discarded: false
+        favIconUrl: "https://lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web//static/favicons/favicon-32x32.png"
+        groupId: -1
+        height: 894
+        highlighted: true
+        id: 5637
+        incognito: false
+        index: 12
+        mutedInfo: {muted: false}
+        pinned: false
+        selected: true
+        status: "complete"
+        title: "200 行 TypeScript 代码实现一个高效缓存库 - 掘金"
+        url: "https://juejin.cn/post/7025388732802924557"
+        width: 1262
+        windowId: 681
+    */
 }
 
 window.onload = function () {

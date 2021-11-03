@@ -16,6 +16,11 @@ html, body {
     font-size: 16px;
 }
 
+.header .version {
+  font-size: 10px;
+  color: #aaa;
+}
+
 .header .bug {
   position: absolute;
   right: 0;
@@ -38,9 +43,6 @@ html, body {
     color: #353535;
     padding: 12px 14px;
     border-bottom: 1px solid #e3e3e3;
-}
-
-.container .item .options-header{
 }
 
 .container .item .options{
@@ -106,6 +108,32 @@ html, body {
 .options-header.line .handle {
   text-align: right;
 }
+
+/* 自定义网站规则 Start*/
+.item .options-custom label {
+  margin: 4px 0;
+  display: block;
+}
+
+.item .options-custom label span {
+  display: inline-block;
+  width: 40px;
+}
+
+.item .options-custom label input{
+  width: calc(100% - 54px);
+}
+.handle .handle-rule-icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.icon-hide {
+  display: none;
+}
+/* 自定义网站规则 End*/
+
 
 /* 其他样式 */
 /* 定义全局变量 */
