@@ -71,7 +71,7 @@ async function load() {
             const getCurrentRuleCSS = width => {
                 const config = getCurrentRule();
                 const reg = new RegExp(urlRuleSlot, 'gi');
-                const css = config.css.replace(reg, width);
+                const css = config.rule.replace(reg, width);
                 return css;
             }
 
@@ -141,13 +141,7 @@ async function load() {
     }
 }
 
-function CustomRuleHandle() {
-    console.log('[element]', $(".handle-rule-icon"))
-    $(".handle-rule-icon").bind("click", function () {
-        console.log('[this]', this)
-    });
-}
-
+// 获取当前 url 详细信息，并检查是否是有效 url
 async function currentIsValidUrl () {
     // https://developer.chrome.com/docs/extensions/reference/tabs/#method-query
     const tabs = await chrome.tabs.query({ currentWindow: true, active: true })
@@ -159,7 +153,6 @@ async function currentIsValidUrl () {
             isValidUrl = true;
         }
     })
-    console.log('[当前tab]', curTabs, urls, isValidUrl)
     return {
         isValidUrl,
         url: curTabs.url,
@@ -188,6 +181,78 @@ async function currentIsValidUrl () {
     */
 }
 
+function initAddRule () {
+    const { WebsiteRuleUrl } = GlobalConstant;
+    const { urlRuleText } = GlobalParams;
+    $('#toggleAddRule').click(function() {
+        // TODO: 获取规则的逻辑要放到页面打开的时候
+        chrome.storage.local.get([WebsiteRuleUrl], (params) => {
+            console.log('[WebsiteRuleUrl 2]', params)
+        })
+        $('#toggleInputRule').fadeToggle("slow","linear");
+        $('#toggleAddRule .show').toggle("slow","linear");
+        $('#toggleAddRule .hide').toggle("slow","linear");
+    })
+
+    // 网站规则 - 添加操作
+    $('#saveRuleButton').click(function() {
+        chrome.storage.local.get([WebsiteRuleUrl], (params) => {
+            console.log('[WebsiteRuleUrl]', params)
+            
+            const urlText = $('#custom_rule_url').val();
+            const ruleText = $('#custom_rule_content').val() + '/*';
+            const hiddenText = $('#custom_rule_hidden').val();
+            let result = [];
+            const cacheRule = params[WebsiteRuleUrl] && JSON.parse(params[WebsiteRuleUrl]);
+            // 如果缓存已经有，则直接使用，没有的话就用空数组
+            if(cacheRule && cacheRule.length > 0){
+                result = cacheRule;
+            }
+            const curRule = {
+                url: urlText,
+                source: 'custom',
+                rule: `
+                    ${ruleText} {${urlRuleText}}
+                    ${hiddenText} {
+                        display: none !important;
+                    }
+                `
+            };
+            result.push(curRule)
+            saveNewRule(curRule);
+            chrome.storage.local.set({ [WebsiteRuleUrl]: JSON.stringify(result) });
+            console.log('[输入内容]', urlText, ruleText)
+        });
+    })
+    // 网站规则 - 重置操作
+    $('#resetRuleButton').click(function() {
+        chrome.storage.local.set({ [WebsiteRuleUrl]: '' });
+        clearNewRule();
+    })
+}
+
+// 往路由配置规则中添加当前规则，如果已经存在，则替换
+function saveNewRule (newRule) {
+    if(!newRule) return;
+    const { url } = newRule;
+    const urlReg = /[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?/;
+    const urlRegRes = urlReg.exec(url);
+    GlobalParams.urlRule[urlRegRes[0]] = newRule
+    console.log('[保存规则]',GlobalParams.urlRule)
+}
+
+// 清空自定义配置的规则
+function clearNewRule () {
+    for(const k in GlobalParams.urlRule){
+        const value = GlobalParams.urlRule[k]
+        if(value['source'] === 'custom'){
+            delete GlobalParams.urlRule[k];
+        }
+    }
+    console.log('[清空规则]',GlobalParams.urlRule)
+}
+
 window.onload = function () {
     load();
+    initAddRule();
 };

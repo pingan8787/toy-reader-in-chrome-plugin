@@ -32,13 +32,7 @@
 	},
 	"content_scripts": [
 	  {
-		"matches": [
-			"https://*.juejin.cn/post/*", 
-			"https://blog.csdn.net/*", 
-			"https://mp.weixin.qq.com/s/*", 
-			"https://segmentfault.com/a/*", 
-			"https://zhuanlan.zhihu.com/p/*"
-		],
+		"matches": ["<all_urls>"],
 		"js": ["page/utils.js", "page/config.js", "page/constant.js", "content-script.js"]
 	  }
 	]

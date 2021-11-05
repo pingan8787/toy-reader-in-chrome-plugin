@@ -2,20 +2,6 @@ const defaultMode = 'default';
 
 chrome.runtime.onInstalled.addListener(() => {
     console.log(`插件加载完成`);
-    chrome.runtime.onInstalled.addListener(() => {
-        chrome.declarativeContent.onPageChanged.removeRules(undefined, () => {
-          chrome.declarativeContent.onPageChanged.addRules([
-            {
-              conditions: [
-                new chrome.declarativeContent.PageStateMatcher({
-                  pageUrl: {hostSuffix: 'https://juejin.cn/'},
-                })
-              ],
-              actions: [new chrome.declarativeContent.ShowAction()]
-            }
-          ]);
-        });
-      });
 
     // 初始化缓存规则
     chrome.storage.local.get("rule", params => {

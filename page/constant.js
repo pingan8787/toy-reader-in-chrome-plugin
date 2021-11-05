@@ -10,5 +10,8 @@ const GlobalConstant = {
     DefaultDarkStyleFlag: "TOY_READER_DARK_CLASS",
 
     // 默认暗黑模式样式的 Storage 的 key 值
-    IsDarkModeKey: "IS_DARK_MODE"
+    IsDarkModeKey: "IS_DARK_MODE",
+
+    // 网站规则 - 网址
+    WebsiteRuleUrl: 'WEBSITE_RULE_URL',
 }

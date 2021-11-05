@@ -7,7 +7,7 @@ const __plugin__widthText = `
 const __plugin__urlRule = {
     juejin: {
         url: "https://juejin.cn/",
-        css: `
+        rule: `
             .container.main-container {${__plugin__widthText}}
             .main-area {
                 width: 100%!important;
@@ -20,7 +20,7 @@ const __plugin__urlRule = {
     },
     mp: {
         url: "https://mp.weixin.qq.com/s/",
-        css: `
+        rule: `
             .rich_media_area_primary_inner {${__plugin__widthText}}
             /* 公众号扫码关注的框 */
             .qr_code_pc_inner{
@@ -34,7 +34,7 @@ const __plugin__urlRule = {
     },
     csdn: {
         url: "https://blog.csdn.net/",
-        css: `
+        rule: `
             #mainBox {${__plugin__widthText}}
             #mainBox main {
                 width: 100%!important;
@@ -48,7 +48,7 @@ const __plugin__urlRule = {
     },
     sf: {
         url: "https://segmentfault.com/",
-        css: `
+        rule: `
             .article-content.container {${__plugin__widthText}}
             /* 广告弹框 */
             .right-side {
@@ -58,7 +58,7 @@ const __plugin__urlRule = {
     },
     zhihu: {
         url: "https://zhuanlan.zhihu.com/p/",
-        css: `
+        rule: `
             .TitleImage,
             .Post-Main .Post-Header,
             .Post-Main .Post-RichTextContainer {${__plugin__widthText}}
@@ -74,7 +74,7 @@ const __plugin__urlRule = {
     },
     github: {
         url: "https://github.com/",
-        css: `
+        rule: `
             .new-discussion-timeline {${__plugin__widthText}}
             .gutter-condensed > div:first-child,
             .markdown-body {
@@ -95,6 +95,7 @@ const GlobalParams = {
     目的是为了做到更灵活替换
     */
     urlRuleSlot: __plugin__urlRuleSlot,
+    urlRuleText: __plugin__widthText,
     urlRule: __plugin__urlRule,
     widthMap: {
         default: "50%",

@@ -47,27 +47,36 @@
                 </div>
                 <div class="handle-container">
                     <!-- <button id="save-button">设置</button> -->
-                    <button id="reset-button">重置</button>
+                    <button id="reset-button" class="default">重置</button>
                 </div>
             </div>
             <div class="item">
                 <div class="options-header line"> 
                     <div class="label">🌓 添加网站规则：</div>
                     <div class="handle">
-                        <img class="handle-rule-icon icon-show" src="./assets/icon/icon-show.png" title="添加规则">
-                        <img class="handle-rule-icon icon-hide" src="./assets/icon/icon-hide.png" title="添加规则">
+                        <span id="toggleAddRule" class="button">
+                            <img class="icon show" src="./assets/icon/icon-show.png" title="添加规则">
+                            <img class="icon hide" src="./assets/icon/icon-hide.png" title="添加规则">
+                        </span>
                     </div>
                 </div>
-                <div class="options-custom">
+                <div id="toggleInputRule" class="options-custom">
                     <label for="custom_rule_url">
                         <span>网址：</span>
                         <input id="custom_rule_url" type="text" placeholder="输入网址，如：https://www.pingan8787.com">
                     </label>
                     <label for="custom_rule_content">
                         <span>规则：</span>
-                        <input id="custom_rule_content" type="text" placeholder="输入容器 class 名称（可多选）如：.a,.b">
+                        <input id="custom_rule_content" type="text" placeholder="输入修改容器宽度的 class（可多选）如：.a,.b">
                     </label>
-                    
+                    <label for="custom_rule_hidden">
+                        <span>隐藏：</span>
+                        <input id="custom_rule_hidden" type="text" placeholder="输入设置隐藏元素的 class（可多选）如：.a,.b">
+                    </label>
+                    <div class="handle-container">
+                        <button id="saveRuleButton">保存</button>
+                        <button id="resetRuleButton" class="default">重置</button>
+                    </div>
                 </div>
             </div>
         </div>
