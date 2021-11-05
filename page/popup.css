@@ -66,7 +66,7 @@ html, body {
   cursor: pointer;
 }
 
-.handle-container #reset-button {
+.handle-container .default {
   background-color: #fff;
   color: #666;
 }
@@ -109,7 +109,14 @@ html, body {
   text-align: right;
 }
 
+.hide {
+  display: none;
+}
+
 /* 自定义网站规则 Start*/
+#toggleInputRule {
+  display: none;
+}
 .item .options-custom label {
   margin: 4px 0;
   display: block;
@@ -123,14 +130,16 @@ html, body {
 .item .options-custom label input{
   width: calc(100% - 54px);
 }
-.handle .handle-rule-icon {
+
+#toggleAddRule {
+  cursor: pointer;
+  position: relative;
+}
+#toggleAddRule img{
   width: 20px;
   height: 20px;
-  cursor: pointer;
-}
-
-.icon-hide {
-  display: none;
+  position: absolute;
+  right: 0;
 }
 /* 自定义网站规则 End*/
 

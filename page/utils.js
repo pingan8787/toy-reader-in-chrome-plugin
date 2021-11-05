@@ -21,7 +21,7 @@ const getCurrentRuleCSS = params => {
     const { width, rules, slot } = params;
     const config = getCurrentRule(rules);
     const reg = new RegExp(slot, 'gi');
-    const css = config.css.replace(reg, width);
+    const css = config.rule.replace(reg, width);
     return css;
 }
 
