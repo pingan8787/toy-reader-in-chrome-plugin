@@ -20,13 +20,19 @@ const getCurrentRule = rules => {
 const getCurrentRuleCSS = params => {
     const { width, rules, slot } = params;
     const config = getCurrentRule(rules);
+    if(!config) return '';
     const reg = new RegExp(slot, 'gi');
     const css = config.rule.replace(reg, width);
     return css;
 }
 
 // 添加全局样式
-function addCssByStyle(cssString, flag) {
+const addCssByStyle = (cssString, flag) => {
+    const pluginStyleTag = document.querySelector("#" + flag);
+    if (pluginStyleTag) {
+        pluginStyleTag.remove();
+    }
+
     const doc = document,
         style = doc.createElement("style");
     style.setAttribute("type", "text/css");
@@ -40,7 +46,24 @@ function addCssByStyle(cssString, flag) {
 }
 
 // 重置全局样式
-function resetCssByStyle(flag) {
+const resetCssByStyle = flag => {
     const element = document.querySelector("#" + flag);
     element && element.remove();
+}
+
+// 读取本地已经缓存的网站规则
+const initRules = async () => {
+    const { WebsiteRuleUrl } = GlobalConstant;
+    const params = await chrome.storage.local.get([WebsiteRuleUrl]);
+    const rules = params[WebsiteRuleUrl];
+    const rulesList = rules && JSON.parse(rules);
+    return rulesList;
+}
+
+// 全局工具方法
+const GlobalUtils = {
+    getCurrentRule,
+    getCurrentRuleCSS,
+    resetCssByStyle,
+    initRules
 }

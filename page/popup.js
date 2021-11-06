@@ -2,150 +2,69 @@ async function load() {
     const { isValidUrl, tab } = await currentIsValidUrl();
     if(!isValidUrl) return;
     // 绑定单选按钮事件，修改配置
-    $("#select-mode")
-        .find('input[type="radio"]')
+    $("#select-mode").find('input[type="radio"]')
         .bind("click", function () {
             const value = $(this).attr("value");
-            chrome.storage.local.set({ mode: value || GlobalConstant.DefaultMode });
-            handle(setPageMode);
+            const params = { mode: value || GlobalConstant.DefaultMode };
+            chrome.storage.local.set(params);
+            handle({
+                type: 'mode',
+                value
+            });
         });
 
     // 重置操作
     $("#reset-button").bind("click", function () {
         $("#select-mode").find("input[type=radio]").attr("checked", false);
-        $("#select-mode")
-            .find('input[type=radio][value="default"]')
-            .prop("checked", true);
-        handle(resetPage);
+        $("#select-mode").find('input[type=radio][value="default"]').prop("checked", true);
+        const params = { mode: GlobalConstant.DefaultMode };
+        chrome.storage.local.set(params);
+        handle({
+            type: 'mode',
+            value: 'default'
+        });
     });
 
     // 黑夜模式开关
     $("#viewMode").bind("click", function () {
         const value = $(this)[0].checked;
         chrome.storage.local.set({ isDarkMode: value });
-        handle(setDarkMode);
+        handle({
+            type: 'isDarkMode',
+            value
+        });
     });
 
     // 通用处理函数
-    const handle = fn => {
-        chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            func: fn,
-            args: [{
-                config: GlobalParams,
-                constant: GlobalConstant
-            }]
+    const handle = params => {
+        chrome.tabs.sendMessage(tab.id, {
+            message: "UPDATE",
+            params
+        }, function(response){
         });
     };
+    initCache();
+}
 
-    // // 初始化读取缓存 - mode
+// 初始化页面选项
+function initCache () {
+    // 初始化读取缓存 - mode
     chrome.storage.local.get("mode", (params) => {
         $(`#select-mode input[type="radio"][value="${params.mode}"]`).click();
     })
 
-    // // 初始化读取缓存 - dark
+    // 初始化读取缓存 - dark
     chrome.storage.local.get("isDarkMode", (params) => {
         $("#viewMode").attr('checked', params.isDarkMode)
     })
-
-    function setPageMode(args) {
-        const { config, constant } = args;
-        const { urlRule, urlRuleSlot, widthMap } = config;
-        const { DefaultStyleFlag, DefaultMode } = constant;
-        chrome.storage.local.get("mode", (params) => {
-            const { mode = DefaultMode } = params;
-            // 获取判断当前平台的 CSS 规则，因为每个平台需要修改的容器不同
-            const getCurrentRule = () => {
-                const url = window.location.href;
-                let result = null;
-                for (let k in urlRule) {
-                    const item = urlRule[k];
-                    if (url.includes(item.url)) {
-                        result = item;
-                    }
-                }
-                return result;
-            }
-
-            // 读取当前规则下的 CSS 样式
-            const getCurrentRuleCSS = width => {
-                const config = getCurrentRule();
-                const reg = new RegExp(urlRuleSlot, 'gi');
-                const css = config.rule.replace(reg, width);
-                return css;
-            }
-
-            function addCssByStyle(cssString) {
-                const doc = document,
-                    style = doc.createElement("style");
-                style.setAttribute("type", "text/css");
-                style.setAttribute("id", DefaultStyleFlag);
-
-                const cssText = doc.createTextNode(cssString);
-                style.appendChild(cssText);
-                const heads = doc.getElementsByTagName("head");
-                if (heads.length) heads[0].appendChild(style);
-                else doc.documentElement.appendChild(style);
-            }
-            // 先判断当前是否已经创建了该 style 标签
-            // 如果已经创建，则先删除在创建
-            // 否则直接创建
-            const pluginStyleTag = document.querySelector("#" + DefaultStyleFlag);
-            if (pluginStyleTag) {
-                pluginStyleTag.remove();
-            }
-            const currentCss = getCurrentRuleCSS(widthMap[mode]);
-            if (currentCss) {
-                addCssByStyle(currentCss);
-            }
-        });
-    }
-
-    function resetPage(args) {
-        const { config, constant } = args;
-        const { DefaultStyleFlag } = constant;
-        const element = document.querySelector("#" + DefaultStyleFlag);
-        element && element.remove();
-        chrome.storage.local.set({ mode: GlobalConstant.DefaultMode });
-    }
-
-    function setDarkMode(args) {
-        const { config, constant } = args;
-        const { darkStyle } = config;
-        const { DefaultDarkStyleFlag } = constant;
-
-        chrome.storage.local.get("isDarkMode", (params) => {
-            const { isDarkMode } = params;
-            function addCssByStyle(cssString) {
-                const doc = document,
-                    style = doc.createElement("style");
-                style.setAttribute("type", "text/css");
-                style.setAttribute("id", DefaultDarkStyleFlag);
-
-                const cssText = doc.createTextNode(cssString);
-                style.appendChild(cssText);
-                const heads = doc.getElementsByTagName("head");
-                if (heads.length) heads[0].appendChild(style);
-                else doc.documentElement.appendChild(style);
-            }
-            const pluginStyleTag = document.querySelector("#" + DefaultDarkStyleFlag);
-            if (isDarkMode) {
-                if (pluginStyleTag) {
-                    pluginStyleTag.remove();
-                }
-                addCssByStyle(darkStyle);
-            } else {
-                pluginStyleTag.remove();
-            }
-        });
-    }
 }
 
 // 获取当前 url 详细信息，并检查是否是有效 url
 async function currentIsValidUrl () {
     // https://developer.chrome.com/docs/extensions/reference/tabs/#method-query
+    const curRules = await initGlobalRules();
     const tabs = await chrome.tabs.query({ currentWindow: true, active: true })
-    const curTabs = tabs[0]; // 数据结构如下
+    const curTabs = tabs[0];
     const urls = GlobalParams.getRuleUrls();
     let isValidUrl = false;
     urls && urls.length > 0 && urls.forEach(item => {
@@ -158,7 +77,7 @@ async function currentIsValidUrl () {
         url: curTabs.url,
         tab: curTabs
     };
-    /*
+    /* tabs 数据结构如下
         active: true
         audible: false
         autoDiscardable: true
@@ -183,51 +102,53 @@ async function currentIsValidUrl () {
 
 function initAddRule () {
     const { WebsiteRuleUrl } = GlobalConstant;
-    const { urlRuleText } = GlobalParams;
-    $('#toggleAddRule').click(function() {
+    const { urlRuleText, urlDefaultRule } = GlobalParams;
+    $('#toggleAddRule').click(async function() {
         // TODO: 获取规则的逻辑要放到页面打开的时候
-        chrome.storage.local.get([WebsiteRuleUrl], (params) => {
-            console.log('[WebsiteRuleUrl 2]', params)
-        })
+        const params = await chrome.storage.local.get([WebsiteRuleUrl])
         $('#toggleInputRule').fadeToggle("slow","linear");
         $('#toggleAddRule .show').toggle("slow","linear");
         $('#toggleAddRule .hide').toggle("slow","linear");
     })
+    $('#showDemoModal').click(function() {
+        $('#ruleDemoModal').show("fast","linear");
+    })
+    $('#closeDemoModal').click(function() {
+        $('#ruleDemoModal').hide("fast","linear");
+    })
 
     // 网站规则 - 添加操作
-    $('#saveRuleButton').click(function() {
-        chrome.storage.local.get([WebsiteRuleUrl], (params) => {
-            console.log('[WebsiteRuleUrl]', params)
-            
-            const urlText = $('#custom_rule_url').val();
-            const ruleText = $('#custom_rule_content').val() + '/*';
-            const hiddenText = $('#custom_rule_hidden').val();
-            let result = [];
-            const cacheRule = params[WebsiteRuleUrl] && JSON.parse(params[WebsiteRuleUrl]);
-            // 如果缓存已经有，则直接使用，没有的话就用空数组
-            if(cacheRule && cacheRule.length > 0){
-                result = cacheRule;
-            }
-            const curRule = {
-                url: urlText,
-                source: 'custom',
-                rule: `
-                    ${ruleText} {${urlRuleText}}
-                    ${hiddenText} {
-                        display: none !important;
-                    }
-                `
-            };
-            result.push(curRule)
-            saveNewRule(curRule);
-            chrome.storage.local.set({ [WebsiteRuleUrl]: JSON.stringify(result) });
-            console.log('[输入内容]', urlText, ruleText)
-        });
+    $('#saveRuleButton').click(async function() {
+        const params = await chrome.storage.local.get([WebsiteRuleUrl]);
+        const urlText = $('#custom_rule_url').val();
+        const ruleText = $('#custom_rule_content').val();
+        const hiddenText = $('#custom_rule_hidden').val();
+        let result = [];
+        const cacheRule = params[WebsiteRuleUrl] && JSON.parse(params[WebsiteRuleUrl]);
+        // 如果缓存已经有，则直接使用，没有的话就用空数组
+        if(cacheRule && cacheRule.length > 0){
+            result = cacheRule;
+        }
+        const curRule = {
+            url: urlText,
+            source: 'custom',
+            rule: `
+                ${ruleText} {${urlRuleText}}
+                ${hiddenText} {
+                    display: none !important;
+                }
+            `
+        };
+        result.push(curRule)
+        const newRules = saveNewRule(curRule);
+        chrome.storage.local.set({ [WebsiteRuleUrl]: JSON.stringify(newRules) });
+        alert('保存成功！')
     })
     // 网站规则 - 重置操作
     $('#resetRuleButton').click(function() {
-        chrome.storage.local.set({ [WebsiteRuleUrl]: '' });
+        chrome.storage.local.set({ [WebsiteRuleUrl]: JSON.stringify(urlDefaultRule) });
         clearNewRule();
+        alert('重置成功，恢复默认配置！')
     })
 }
 
@@ -238,7 +159,7 @@ function saveNewRule (newRule) {
     const urlReg = /[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?/;
     const urlRegRes = urlReg.exec(url);
     GlobalParams.urlRule[urlRegRes[0]] = newRule
-    console.log('[保存规则]',GlobalParams.urlRule)
+    return GlobalParams.urlRule;
 }
 
 // 清空自定义配置的规则
@@ -249,7 +170,12 @@ function clearNewRule () {
             delete GlobalParams.urlRule[k];
         }
     }
-    console.log('[清空规则]',GlobalParams.urlRule)
+}
+
+// [非常重要]初始化配置的规则
+async function initGlobalRules () {
+    const rules = await initRules();
+    GlobalParams.urlRule = rules;
 }
 
 window.onload = function () {

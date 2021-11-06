@@ -1,8 +1,6 @@
 const defaultMode = 'default';
 
 chrome.runtime.onInstalled.addListener(() => {
-    console.log(`插件加载完成`);
-
     // 初始化缓存规则
     chrome.storage.local.get("rule", params => {
         // 本地没有保存规则的时候，才设置
@@ -17,7 +15,6 @@ chrome.runtime.onInstalled.addListener(() => {
         if (!curMode) {
             chrome.storage.local.set({ mode: defaultMode });
         }
-        console.log(`插件加载完成，当前模式：${curMode}`);
     })
 });
 
@@ -30,7 +27,6 @@ chrome.contextMenus.create({
 chrome.contextMenus.onClicked.addListener(async function (info, tab) {
     const { selectionText, pageUrl } = info;
     const copyText = `[${selectionText}](${pageUrl})`;
-    console.log('【ToyReader 复制内容】', copyText)
     try {
         await navigator.clipboard.writeText(copyText);
     } catch (error) {

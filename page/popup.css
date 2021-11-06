@@ -3,6 +3,7 @@ html, body {
 }
 .body {
   width: 380px;
+  position: relative;
 }
 
 .header {
@@ -135,11 +136,50 @@ html, body {
   cursor: pointer;
   position: relative;
 }
-#toggleAddRule img{
+.icon {
   width: 20px;
   height: 20px;
+}
+.icon-right {
   position: absolute;
   right: 0;
+}
+.tips-demo {
+  cursor: pointer;
+  font-size: 10px;
+  color: #aaa;
+  text-decoration: underline;
+}
+#ruleDemoModal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 200px;
+  margin-left: -150px;
+  margin-top: -100px;
+  border: 1px solid #e3e3e3;
+  background: rgba(255, 255, 255, .9);
+  color: #333;
+  display: none;
+}
+
+#ruleDemoModal .modal-header{
+  padding: 10px;
+  border-bottom: 1 px solid #e3e3e3;
+  font-size: 14px;
+  font-weight: bold;
+}
+#ruleDemoModal .close {
+  right: 10px;
+  cursor: pointer;
+}
+#ruleDemoModal .modal-container {
+  padding: 0 10px;
+}
+#ruleDemoModal .modal-container .title{
+  font-size: 12px;
+  font-weight: bold;
 }
 /* 自定义网站规则 End*/
 
