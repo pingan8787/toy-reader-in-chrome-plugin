@@ -33,3 +33,44 @@ JSON 格式如下：
 	"https://zhuanlan.zhihu.com/p/*"
 ],
 ```
+
+## executeScript 内无法读取 popup.js 的内容
+```js
+// chrome.scripting.executeScript({
+//     target: { tabId: tab.id },
+//     func: fn,
+//     args: [{ // executeScript 内无法读取 popup.js 的内容，所以需要通过 args 注入
+//         config: GlobalParams,
+//         constant: GlobalConstant
+//     }]
+// });
+```
+
+## 自定义规则演示
+w3cschool 演示：
+```
+网址：https://www.w3cschool.cn/
+
+规则：#pcover
+
+隐藏：.right-item, #rfbanner
+```
+
+慕课网手记演示：
+```
+网址：https://www.imooc.com/article
+
+规则：.left_essay, .main_con
+
+隐藏：.right_recommend, .active-box
+```
+
+腾讯云社区演示：
+```
+网址：https://cloud.tencent.com/developer/article/
+
+规则：.J-body.col-body.pg-2-article
+
+隐藏：.J-sharingBar, .layout-side
+```
+

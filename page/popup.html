@@ -52,11 +52,11 @@
             </div>
             <div class="item">
                 <div class="options-header line"> 
-                    <div class="label">🌓 添加网站规则：</div>
+                    <div class="label">🍔 添加网站规则：<span class="tips-demo" id="showDemoModal">demo</span></div>
                     <div class="handle">
                         <span id="toggleAddRule" class="button">
-                            <img class="icon show" src="./assets/icon/icon-show.png" title="添加规则">
-                            <img class="icon hide" src="./assets/icon/icon-hide.png" title="添加规则">
+                            <img class="icon icon-right show" src="./assets/icon/icon-show.png" title="添加规则">
+                            <img class="icon icon-right hide" src="./assets/icon/icon-hide.png" title="添加规则">
                         </span>
                     </div>
                 </div>
@@ -67,15 +67,15 @@
                     </label>
                     <label for="custom_rule_content">
                         <span>规则：</span>
-                        <input id="custom_rule_content" type="text" placeholder="输入修改容器宽度的 class（可多选）如：.a,.b">
+                        <input id="custom_rule_content" type="text" placeholder="输入修改容器宽度的 class（可多选）如：.a, .b">
                     </label>
                     <label for="custom_rule_hidden">
                         <span>隐藏：</span>
-                        <input id="custom_rule_hidden" type="text" placeholder="输入设置隐藏元素的 class（可多选）如：.a,.b">
+                        <input id="custom_rule_hidden" type="text" placeholder="输入设置隐藏元素的 class（可多选）如：.a, .b">
                     </label>
                     <div class="handle-container">
                         <button id="saveRuleButton">保存</button>
-                        <button id="resetRuleButton" class="default">重置</button>
+                        <button id="resetRuleButton" class="default">默认</button>
                     </div>
                 </div>
             </div>
@@ -92,6 +92,20 @@
         <div class="footer">
             <div class="left">🤠作者：<a target="_blank" href="https://www.pingan8787.com">pingan8787</a></div>
             <div class="right">🎊微信公众号：<a target="_blank" href="https://mp.weixin.qq.com/s/N-G49hpphvbUy8eD9xKO0w">前端自习课</a></div>
+        </div>
+    </div>
+    <div id="ruleDemoModal">
+        <div class="modal-header">添加网站规则示例<img id="closeDemoModal" class="icon icon-right close" src="./assets/icon/icon-hide.png" title="关闭"></div>
+        <div class="modal-container">
+            <div class="title">1.慕课网手记演示：</div>
+            <div>网址：https://www.imooc.com/article</div>
+            <div>规则：.left_essay, .main_con</div>
+            <div>隐藏：.right_recommend, .active-box</div>
+
+            <div class="title">2.腾讯云社区演示：</div>
+            <div>网址：https://cloud.tencent.com/developer/article/</div>
+            <div>规则：.J-body.col-body.pg-2-article</div>
+            <div>隐藏：.J-sharingBar, .layout-side</div>
         </div>
     </div>
 </body>

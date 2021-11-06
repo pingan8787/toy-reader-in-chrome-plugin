@@ -97,14 +97,15 @@ const GlobalParams = {
     urlRuleSlot: __plugin__urlRuleSlot,
     urlRuleText: __plugin__widthText,
     urlRule: __plugin__urlRule,
+    urlDefaultRule: {...__plugin__urlRule}, // 备份一份
     widthMap: {
         default: "50%",
         width: "75%",
         full: "100%",
     },
-    getRuleUrls: () => {
+    getRuleUrls: (rules) => {
         let result = [];
-        for(let { url } of Object.values(__plugin__urlRule)){
+        for(let { url } of Object.values(rules || GlobalParams.urlRule)){
             result.push(url)
         }
         return result;
