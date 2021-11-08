@@ -2,6 +2,11 @@ const __plugin__urlRuleSlot =  "{{__width__}}";
 const __plugin__widthText = `
     width: ${__plugin__urlRuleSlot}!important;
     max-width: ${__plugin__urlRuleSlot}!important;
+    transition: all .25s ease-in-out;
+`
+const __plugin__widthNone = `
+    display: none !important;
+    transition: all .25s ease-in-out;
 `
 
 const __plugin__urlRule = {
@@ -12,9 +17,11 @@ const __plugin__urlRule = {
             .main-area {
                 width: 100%!important;
                 max-width: 100%!important;
+                transition: all .25s ease-in-out;
             }
             .sidebar {
                 display: none;
+                transition: all .25s ease-in-out;
             }
         `
     },
@@ -96,6 +103,7 @@ const GlobalParams = {
     */
     urlRuleSlot: __plugin__urlRuleSlot,
     urlRuleText: __plugin__widthText,
+    urlRuleNone: __plugin__widthNone,
     urlRule: __plugin__urlRule,
     urlDefaultRule: {...__plugin__urlRule}, // 备份一份
     widthMap: {

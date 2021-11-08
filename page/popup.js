@@ -77,44 +77,31 @@ async function currentIsValidUrl () {
         url: curTabs.url,
         tab: curTabs
     };
-    /* tabs 数据结构如下
-        active: true
-        audible: false
-        autoDiscardable: true
-        discarded: false
-        favIconUrl: "https://lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web//static/favicons/favicon-32x32.png"
-        groupId: -1
-        height: 894
-        highlighted: true
-        id: 5637
-        incognito: false
-        index: 12
-        mutedInfo: {muted: false}
-        pinned: false
-        selected: true
-        status: "complete"
-        title: "200 行 TypeScript 代码实现一个高效缓存库 - 掘金"
-        url: "https://juejin.cn/post/7025388732802924557"
-        width: 1262
-        windowId: 681
-    */
 }
 
 function initAddRule () {
     const { WebsiteRuleUrl } = GlobalConstant;
-    const { urlRuleText, urlDefaultRule } = GlobalParams;
-    $('#toggleAddRule').click(async function() {
+    const { urlRuleText, urlRuleNone, urlDefaultRule } = GlobalParams;
+    // 显示隐藏添加规则的模块
+    $('#toggleAddRule .input').click(async function() {
         // TODO: 获取规则的逻辑要放到页面打开的时候
         const params = await chrome.storage.local.get([WebsiteRuleUrl])
-        $('#toggleInputRule').fadeToggle("slow","linear");
-        $('#toggleAddRule .show').toggle("slow","linear");
-        $('#toggleAddRule .hide').toggle("slow","linear");
+        $('#toggleInputRule').fadeToggle("fast","linear");
+        $('#toggleAddRule .show').toggle("fast","linear");
+        $('#toggleAddRule .hide').toggle("fast","linear");
     })
+    // 显示添加规则示例的弹框
     $('#showDemoModal').click(function() {
         $('#ruleDemoModal').show("fast","linear");
     })
+    // 隐藏添加规则示例的弹框
     $('#closeDemoModal').click(function() {
         $('#ruleDemoModal').hide("fast","linear");
+    })
+    // 跳转查看所有规则列表
+    $('#toggleAddRule .list').click(async function() {
+        const url = chrome.runtime.getURL("./page/rule/rule.html");
+        let tab = await chrome.tabs.create({ url });
     })
 
     // 网站规则 - 添加操作
@@ -134,9 +121,7 @@ function initAddRule () {
             source: 'custom',
             rule: `
                 ${ruleText} {${urlRuleText}}
-                ${hiddenText} {
-                    display: none !important;
-                }
+                ${hiddenText} {${urlRuleNone}}
             `
         };
         result.push(curRule)

@@ -10,9 +10,7 @@
 	},
 	"homepage_url": "https://juejin.cn/user/1011206425950605",
 	"permissions": [
-		"declarativeContent",
 		"contextMenus",
-		"clipboardRead",
 		"clipboardWrite",
 		"storage",
 		"activeTab",

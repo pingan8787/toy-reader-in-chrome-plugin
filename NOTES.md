@@ -74,3 +74,28 @@ w3cschool 演示：
 隐藏：.J-sharingBar, .layout-side
 ```
 
+## chrome.tabs.query 获取到的 tabs 数据格式
+
+```js
+{
+  active: true
+  audible: false
+  autoDiscardable: true
+  discarded: false
+  favIconUrl: "https://lf3-cdn-tos.bytescm.com/obj/static/xitu_juejin_web//static/favicons/favicon-32x32.png"
+  groupId: -1
+  height: 894
+  highlighted: true
+  id: 5637
+  incognito: false
+  index: 12
+  mutedInfo: {muted: false}
+  pinned: false
+  selected: true
+  status: "complete"
+  title: "200 行 TypeScript 代码实现一个高效缓存库 - 掘金"
+  url: "https://juejin.cn/post/7025388732802924557"
+  width: 1262
+  windowId: 681
+}
+```

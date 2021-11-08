@@ -59,7 +59,7 @@ html, body {
 }
 
 .handle-container button {
-  margin-top: 16px;
+  margin-top: 8px;
   background-color: #e8f3ff;
   color: #1e80ff;
   padding: 5px 16px;
@@ -129,21 +129,26 @@ html, body {
 }
 
 .item .options-custom label input{
-  width: calc(100% - 54px);
+  border: 1px solid #D9D9D9;
+  padding: 4px 6px;
+  font-size: 12px;
+  box-sizing: border-box;
+  width: calc(100% - 46px);
 }
 
 #toggleAddRule {
-  cursor: pointer;
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
 }
 .icon {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
+  margin-left: 6px;
+  cursor: pointer;
 }
-.icon-right {
-  position: absolute;
-  right: 0;
-}
+
 .tips-demo {
   cursor: pointer;
   font-size: 10px;
