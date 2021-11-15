@@ -1,5 +1,6 @@
 async function load() {
     const { isValidUrl, tab } = await currentIsValidUrl();
+    console.log('[isValidUrl]', isValidUrl)
     if(!isValidUrl) return;
     // 绑定单选按钮事件，修改配置
     $("#select-mode").find('input[type="radio"]')
@@ -65,7 +66,8 @@ async function currentIsValidUrl () {
     const curRules = await initGlobalRules();
     const tabs = await chrome.tabs.query({ currentWindow: true, active: true })
     const curTabs = tabs[0];
-    const urls = GlobalParams.getRuleUrls();
+    const urls = GlobalUtils.getRuleUrls();
+    console.log('[urls]', tabs, urls, curRules)
     let isValidUrl = false;
     urls && urls.length > 0 && urls.forEach(item => {
         if(curTabs.url.includes(item)){
@@ -106,16 +108,9 @@ function initAddRule () {
 
     // 网站规则 - 添加操作
     $('#saveRuleButton').click(async function() {
-        const params = await chrome.storage.local.get([WebsiteRuleUrl]);
         const urlText = $('#custom_rule_url').val();
         const ruleText = $('#custom_rule_content').val();
         const hiddenText = $('#custom_rule_hidden').val();
-        let result = [];
-        const cacheRule = params[WebsiteRuleUrl] && JSON.parse(params[WebsiteRuleUrl]);
-        // 如果缓存已经有，则直接使用，没有的话就用空数组
-        if(cacheRule && cacheRule.length > 0){
-            result = cacheRule;
-        }
         const curRule = {
             url: urlText,
             source: 'custom',
@@ -124,7 +119,6 @@ function initAddRule () {
                 ${hiddenText} {${urlRuleNone}}
             `
         };
-        result.push(curRule)
         const newRules = saveNewRule(curRule);
         chrome.storage.local.set({ [WebsiteRuleUrl]: JSON.stringify(newRules) });
         alert('保存成功！')
@@ -132,7 +126,8 @@ function initAddRule () {
     // 网站规则 - 重置操作
     $('#resetRuleButton').click(function() {
         chrome.storage.local.set({ [WebsiteRuleUrl]: JSON.stringify(urlDefaultRule) });
-        clearNewRule();
+        // clearNewRule();
+        GlobalParams.urlRule = urlDefaultRule;
         alert('重置成功，恢复默认配置！')
     })
 }
@@ -141,9 +136,8 @@ function initAddRule () {
 function saveNewRule (newRule) {
     if(!newRule) return;
     const { url } = newRule;
-    const urlReg = /[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?/;
-    const urlRegRes = urlReg.exec(url);
-    GlobalParams.urlRule[urlRegRes[0]] = newRule
+    const resUrl = GlobalUtils.cutUrlHref(url);
+    GlobalParams.urlRule[resUrl] = newRule;
     return GlobalParams.urlRule;
 }
 
@@ -159,8 +153,9 @@ function clearNewRule () {
 
 // [非常重要]初始化配置的规则
 async function initGlobalRules () {
-    const rules = await initRules();
-    GlobalParams.urlRule = rules;
+    const rules = await GlobalUtils.initRules();
+    rules && (GlobalParams.urlRule = rules);
+    return rules;
 }
 
 window.onload = function () {

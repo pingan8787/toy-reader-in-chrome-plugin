@@ -171,13 +171,15 @@ html, body {
 
 #ruleDemoModal .modal-header{
   padding: 10px;
-  border-bottom: 1 px solid #e3e3e3;
+  border-bottom: 1px solid #e3e3e3;
   font-size: 14px;
   font-weight: bold;
+  position: relative;
 }
 #ruleDemoModal .close {
   right: 10px;
   cursor: pointer;
+  position: absolute;
 }
 #ruleDemoModal .modal-container {
   padding: 0 10px;

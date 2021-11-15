@@ -20,7 +20,7 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.contextMenus.create({
     id: 'ToyReader',
-    title: "生成分享链接: %s",
+    title: "[Toy Reader]生成分享链接: %s",
     contexts: ['selection'], // 只有当选中文字时才会出现此右键菜单
 });
 

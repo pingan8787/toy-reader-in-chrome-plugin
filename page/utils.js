@@ -1,5 +1,5 @@
 // 获取判断当前平台的 CSS 规则，因为每个平台需要修改的容器不同
-const getCurrentRule = rules => {
+const _getCurrentRule = rules => {
     const url = window.location.href;
     let result = null;
     for (let k in rules) {
@@ -17,9 +17,9 @@ const getCurrentRule = rules => {
     params.slot  urlRuleSlot
     params.rules urlRule
 */
-const getCurrentRuleCSS = params => {
+const _getCurrentRuleCSS = params => {
     const { width, rules, slot } = params;
-    const config = getCurrentRule(rules);
+    const config = _getCurrentRule(rules);
     if(!config) return '';
     const reg = new RegExp(slot, 'gi');
     const css = config.rule.replace(reg, width);
@@ -27,7 +27,7 @@ const getCurrentRuleCSS = params => {
 }
 
 // 添加全局样式
-const addCssByStyle = (cssString, flag) => {
+const _addCssByStyle = (cssString, flag) => {
     const pluginStyleTag = document.querySelector("#" + flag);
     if (pluginStyleTag) {
         pluginStyleTag.remove();
@@ -46,13 +46,13 @@ const addCssByStyle = (cssString, flag) => {
 }
 
 // 重置全局样式
-const resetCssByStyle = flag => {
+const _resetCssByStyle = flag => {
     const element = document.querySelector("#" + flag);
     element && element.remove();
 }
 
 // 读取本地已经缓存的网站规则
-const initRules = async () => {
+const _initRules = async () => {
     const { WebsiteRuleUrl } = GlobalConstant;
     const params = await chrome.storage.local.get([WebsiteRuleUrl]);
     const rules = params[WebsiteRuleUrl];
@@ -60,10 +60,27 @@ const initRules = async () => {
     return rulesList;
 }
 
+const _getRuleUrls = (urls = GlobalParams.urlRule) => {
+    let result = [];
+    for(let { url } of Object.values(urls)){
+        result.push(url)
+    }
+    return result;
+}
+
+const _cutUrlHref = (url = window.location.href) => {
+    const urlReg = /[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?/;
+    const urlRegRes = urlReg.exec(url);
+    return urlRegRes[0];
+}  
+
 // 全局工具方法
 const GlobalUtils = {
-    getCurrentRule,
-    getCurrentRuleCSS,
-    resetCssByStyle,
-    initRules
+    getCurrentRule: _getCurrentRule,
+    getCurrentRuleCSS: _getCurrentRuleCSS,
+    resetCssByStyle: _resetCssByStyle,
+    addCssByStyle: _addCssByStyle,
+    initRules: _initRules,
+    getRuleUrls: _getRuleUrls,
+    cutUrlHref: _cutUrlHref
 }

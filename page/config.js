@@ -111,9 +111,9 @@ const GlobalParams = {
         width: "75%",
         full: "100%",
     },
-    getRuleUrls: (rules) => {
+    getRuleUrls: () => {
         let result = [];
-        for(let { url } of Object.values(rules || GlobalParams.urlRule)){
+        for(let { url } of Object.values(__plugin__urlRule)){
             result.push(url)
         }
         return result;

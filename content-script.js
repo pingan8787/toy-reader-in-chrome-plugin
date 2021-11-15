@@ -1,9 +1,10 @@
 console.log('[启动插件]', document, GlobalParams)
 const { urlRuleSlot, urlRule, widthMap, darkStyle } = GlobalParams;
 const { DefaultStyleFlag, DefaultDarkStyleFlag, WebsiteRuleUrl } = GlobalConstant;
+const { getCurrentRule, getCurrentRuleCSS, resetCssByStyle, addCssByStyle, initRules } = GlobalUtils;
 
 // 读取本地已经缓存的 mode 模式
-const initMode = async (rules) => {
+const initMode = async (rules = urlRule) => {
     const params = await chrome.storage.local.get("mode");
     // 本地没有保存规则的时候，才设置
     if (!params.mode) {
@@ -40,6 +41,7 @@ const initRule = async () => {
     const params = await chrome.storage.local.get([WebsiteRuleUrl]);
     const rules = params[WebsiteRuleUrl];
     const rulesList = rules && JSON.parse(rules);
+    console.log('[rulesList]', rulesList)
     return rulesList;
 }
 
@@ -64,12 +66,37 @@ const initMessageListener = (rules) => {
     });
 }
 
+const isValidUrl = async () => {
+    const params = await chrome.storage.local.get([WebsiteRuleUrl]);
+    const cacheRules = params[WebsiteRuleUrl];
+    let rules = urlRule;
+    if(cacheRules){
+        rules = JSON.parse(cacheRules);
+    }
+    const urls = GlobalUtils.cutUrlHref();
+    console.log('[rules rules]', rules)
+    let res = false;
+    urls && rules && 
+    Object.values(rules).length > 0 && 
+    Object.values(rules).forEach(item => {
+        if(item.url.includes(urls)){
+            res = true;
+        }
+    })
+    return res;
+}
+
 // 初始化入口
 const init = async () => {
-    const rules = await initRule();
-    await initMode(rules);
-    initMessageListener(rules);
-    await initDarkMode();
+    const curIsValidUrl = await isValidUrl();
+    console.log('[isValidUrl curIsValidUrl]', curIsValidUrl)
+    // 已设置规则的网址才要做初始化处理
+    if(curIsValidUrl){
+        const rules = await initRule();
+        await initMode(rules);
+        initMessageListener(rules);
+        await initDarkMode();
+    }
 }
 
 init();
