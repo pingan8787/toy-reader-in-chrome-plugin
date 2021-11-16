@@ -1,6 +1,5 @@
 async function load() {
     const { isValidUrl, tab } = await currentIsValidUrl();
-    console.log('[isValidUrl]', isValidUrl)
     if(!isValidUrl) return;
     // 绑定单选按钮事件，修改配置
     $("#select-mode").find('input[type="radio"]')
@@ -67,7 +66,6 @@ async function currentIsValidUrl () {
     const tabs = await chrome.tabs.query({ currentWindow: true, active: true })
     const curTabs = tabs[0];
     const urls = GlobalUtils.getRuleUrls();
-    console.log('[urls]', tabs, urls, curRules)
     let isValidUrl = false;
     urls && urls.length > 0 && urls.forEach(item => {
         if(curTabs.url.includes(item)){

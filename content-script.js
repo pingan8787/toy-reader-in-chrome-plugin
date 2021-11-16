@@ -1,4 +1,4 @@
-console.log('[启动插件]', document, GlobalParams)
+console.log('[启动 Toy Reader]')
 const { urlRuleSlot, urlRule, widthMap, darkStyle } = GlobalParams;
 const { DefaultStyleFlag, DefaultDarkStyleFlag, WebsiteRuleUrl } = GlobalConstant;
 const { getCurrentRule, getCurrentRuleCSS, resetCssByStyle, addCssByStyle, initRules } = GlobalUtils;
@@ -41,7 +41,6 @@ const initRule = async () => {
     const params = await chrome.storage.local.get([WebsiteRuleUrl]);
     const rules = params[WebsiteRuleUrl];
     const rulesList = rules && JSON.parse(rules);
-    console.log('[rulesList]', rulesList)
     return rulesList;
 }
 
@@ -74,7 +73,6 @@ const isValidUrl = async () => {
         rules = JSON.parse(cacheRules);
     }
     const urls = GlobalUtils.cutUrlHref();
-    console.log('[rules rules]', rules)
     let res = false;
     urls && rules && 
     Object.values(rules).length > 0 && 
@@ -89,7 +87,6 @@ const isValidUrl = async () => {
 // 初始化入口
 const init = async () => {
     const curIsValidUrl = await isValidUrl();
-    console.log('[isValidUrl curIsValidUrl]', curIsValidUrl)
     // 已设置规则的网址才要做初始化处理
     if(curIsValidUrl){
         const rules = await initRule();

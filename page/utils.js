@@ -71,7 +71,7 @@ const _getRuleUrls = (urls = GlobalParams.urlRule) => {
 const _cutUrlHref = (url = window.location.href) => {
     const urlReg = /[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?/;
     const urlRegRes = urlReg.exec(url);
-    return urlRegRes[0];
+    return urlRegRes && urlRegRes[0];
 }  
 
 // 全局工具方法
