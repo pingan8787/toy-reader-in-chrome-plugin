@@ -99,3 +99,49 @@ w3cschool 演示：
   windowId: 681
 }
 ```
+
+## 网站配置的参数
+默认格式如下：
+```js
+juejin: { // key 为网站名称
+    url: "https://juejin.cn/",
+    rule: `
+        .container.main-container {${__plugin__widthText}}
+        .main-area {
+            width: 100%!important;
+            max-width: 100%!important;
+            transition: all .25s ease-in-out;
+        }
+        .sidebar {
+            display: none;
+            transition: all .25s ease-in-out;
+        }
+    `
+},
+www.imooc.com: {
+  createTime: "2021-11-17 23:02:59",
+  rule: "", /* 省略 */
+  source: "custom",
+  url: ""
+}
+
+```
+
+字段介绍：
+- `juejin`： 网站名称
+- `url`：网站地址，一般为域名，不含其他路由。
+- `rule`：网站匹配规则，值为 CSS 选择器，目前支持 2 种类型，一种配置显示宽度，一种隐藏元素。
+- `source`：该规则来源，目前没有配置为默认规则，`"custom"`为用户自定义配置。
+- `createTime`：该规则创建时间。
+
+## hightlight.js 使用注意
+选择需要的语言下载：https://highlightjs.org/download/   
+官方指南：https://highlightjs.org/usage/  
+官方 demo：https://highlightjs.org/static/demo/   
+
+注意：
+如果页面数据是异步获取，需要在数据渲染页面结束后再调用渲染：
+```js
+await asyncGetData();
+hljs.highlightAll();
+```

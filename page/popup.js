@@ -115,7 +115,8 @@ function initAddRule () {
             rule: `
                 ${ruleText} {${urlRuleText}}
                 ${hiddenText} {${urlRuleNone}}
-            `
+            `,
+            createTime: dayjs().format("YYYY-MM-DD HH:mm:ss")
         };
         const newRules = saveNewRule(curRule);
         chrome.storage.local.set({ [WebsiteRuleUrl]: JSON.stringify(newRules) });

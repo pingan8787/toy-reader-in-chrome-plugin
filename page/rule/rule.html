@@ -4,9 +4,36 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="../assets/highlight/styles/github-dark.min.css">
+    <link rel="stylesheet" href="./rule.css">
+    <script src="../assets/jquery-3.6.0.min.js"></script>
+    <script src="../assets/dayjs.js"></script>
+    <script src="../assets/highlight/highlight.min.js"></script>
+    <script src="../constant.js"></script>
+    <script src="../config.js"></script>
+    <script src="../utils.js"></script>
+    <script src="./rule.js"></script>
+    <title>Toy Reader 规则列表</title>
 </head>
 <body>
-    <h1>标签页</h1>
+    <div id="header">
+        <div class="logo">
+            <img src="../assets/icon/logo.png" alt="Toy Reader - 专注阅读辅助工具">
+            <span>Toy Reader</span>
+        </div>
+        <div class="title">
+            <span>总计：<span class="rule-count">24</span> 条规则</span>
+        </div>
+    </div>
+    <div id="body">
+        <div class="rule-type">默认规则</div>
+        <div class="rule-type-container">
+            <ul id="rule-default"></ul>
+        </div>
+        <div class="rule-type">自定义规则</div>
+        <div class="rule-type-container">
+            <ul id="rule-custom"></ul>
+        </div>
+    </div>
 </body>
 </html>
