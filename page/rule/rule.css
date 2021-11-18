@@ -39,7 +39,32 @@ body {
 }
 
 #body .rule-type-container ul {
-  padding-left: 20px;
+  padding: 0;
+}
+
+#body .rule-type-container ul li {
+  width: 360px;
+  padding: 20px;
+  text-decoration: none;
+  display: inline-block;
+  margin: 20px;
+  transition: all 0.15s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 3px;
+  box-shadow: 0 10px 40px -10px rgb(0 64 128 / 20%);
+  position: relative;
+  top: 0;
+}
+
+#body .rule-type-container ul li:hover {
+    box-shadow: 0 10px 40px -10px rgb(0 64 128 / 40%);
+    top: -2px;
+}
+
+#body .rule-type-container ul .rule-name {
+  font-size: 16px;
+  margin-bottom: 8px;
 }
 
 #body .rule-type-container ul .rule-name .rule-icon {
@@ -48,4 +73,9 @@ body {
   display: inline-block;
   border-radius: 50%;
   margin-right: 6px;
+}
+
+#body .rule-type-container ul pre code {
+  height: 160px;
+  overflow: auto;
 }

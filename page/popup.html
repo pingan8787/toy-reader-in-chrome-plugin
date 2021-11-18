@@ -16,7 +16,7 @@
 
 <body>
     <div class="body">
-        <div class="header">Toy Reader <span class="version">(v0.1.6)</span><a class="bug" target="_blank" href="https://github.com/pingan8787/toy-reader-in-chrome-plugin/issues" title="点击这里，给我提 Bug ~">？</a></div>
+        <div class="header">Toy Reader<span class="version">(v0.1.6)</span><a class="bug" target="_blank" href="https://github.com/pingan8787/toy-reader-in-chrome-plugin/issues" title="点击这里，给我提 Bug ~">？</a></div>
         <div class="container">
             <div class="item">
                 <div class="options-header line"> 
@@ -53,7 +53,7 @@
             </div>
             <div class="item">
                 <div class="options-header line"> 
-                    <div class="label">🍔 添加网站规则：<span class="tips-demo" id="showDemoModal">demo</span></div>
+                    <div class="label">🍔 添加网站规则：<span class="tips-demo" id="showDemoModal">示例</span></div>
                     <div class="handle">
                         <span id="toggleAddRule" class="button">
                             <img class="icon list" src="./assets/icon/icon-list.png" title="查看所有规则">
@@ -67,6 +67,10 @@
                         <span>网址：</span>
                         <input id="custom_rule_url" type="text" placeholder="输入网址，如：https://www.pingan8787.com">
                     </label>
+                    <label for="custom_rule_alias">
+                        <span>别名：</span>
+                        <input id="custom_rule_alias" type="text" placeholder="输入规则别名，方便区分">
+                    </label>
                     <label for="custom_rule_content">
                         <span>规则：</span>
                         <input id="custom_rule_content" type="text" placeholder="输入修改容器宽度的 class（可多选）如：.a, .b">
@@ -76,8 +80,8 @@
                         <input id="custom_rule_hidden" type="text" placeholder="输入设置隐藏元素的 class（可多选）如：.a, .b">
                     </label>
                     <div class="handle-container">
-                        <button id="saveRuleButton">保存</button>
-                        <button id="resetRuleButton" class="default">默认</button>
+                        <button id="saveRuleButton">保存规则</button>
+                        <button id="resetRuleButton" class="default">清空规则</button>
                     </div>
                 </div>
             </div>
@@ -101,11 +105,13 @@
         <div class="modal-container">
             <div class="title">1.慕课网手记演示：</div>
             <div>网址：https://www.imooc.com/article</div>
+            <div>别名：慕课网手记</div>
             <div>规则：.left_essay, .main_con</div>
             <div>隐藏：.right_recommend, .active-box</div>
 
             <div class="title">2.腾讯云社区演示：</div>
             <div>网址：https://cloud.tencent.com/developer/article/</div>
+            <div>别名：腾讯云+社区</div>
             <div>规则：.J-body.col-body.pg-2-article</div>
             <div>隐藏：.J-sharingBar, .layout-side</div>
         </div>

@@ -12,86 +12,98 @@ const __plugin__widthNone = `
 const __plugin__urlRule = {
     juejin: {
         url: "https://juejin.cn/",
-        rule: `
-            .container.main-container {${__plugin__widthText}}
-            .main-area {
-                width: 100%!important;
-                max-width: 100%!important;
-                transition: all .25s ease-in-out;
-            }
-            .sidebar {
-                display: none;
-                transition: all .25s ease-in-out;
-            }
-        `
+        alias: '掘金社区',
+        rule: 
+`
+.container.main-container {${__plugin__widthText}}
+.main-area {
+    width: 100%!important;
+    max-width: 100%!important;
+    transition: all .25s ease-in-out;
+}
+.sidebar {
+    display: none;
+    transition: all .25s ease-in-out;
+}
+`
     },
     mp: {
         url: "https://mp.weixin.qq.com/s/",
-        rule: `
-            .rich_media_area_primary_inner {${__plugin__widthText}}
-            /* 公众号扫码关注的框 */
-            .qr_code_pc_inner{
-                display: none !important;
-            }
-            /* 壹伴插件 */
-            .mpa-plugin-data-enhance {
-                display: none !important;
-            }
-        `
+        alias: '微信公众号',
+        rule: 
+`
+.rich_media_area_primary_inner {${__plugin__widthText}}
+/* 公众号扫码关注的框 */
+.qr_code_pc_inner{
+    display: none !important;
+}
+/* 壹伴插件 */
+.mpa-plugin-data-enhance {
+    display: none !important;
+}
+`
     },
     csdn: {
         url: "https://blog.csdn.net/",
-        rule: `
-            #mainBox {${__plugin__widthText}}
-            #mainBox main {
-                width: 100%!important;
-            }
-            /* 广告弹框 */
-            .blog_container_aside, 
-            .recommend-right {
-                display: none !important;
-            }
-        `
+        alias: 'CSDN',
+        rule: 
+`
+#mainBox {${__plugin__widthText}}
+#mainBox main {
+    width: 100%!important;
+}
+/* 广告弹框 */
+.blog_container_aside, 
+.recommend-right {
+    display: none !important;
+}
+`
     },
     sf: {
         url: "https://segmentfault.com/",
-        rule: `
-            .article-content.container {${__plugin__widthText}}
-            /* 广告弹框 */
-            .right-side {
-                display: none !important;
-            }
-        `,
+        alias: '思否社区',
+        rule: 
+`
+.article-content.container {${__plugin__widthText}}
+/* 广告弹框 */
+.right-side {
+    display: none !important;
+}
+`,
     },
     zhihu: {
         url: "https://zhuanlan.zhihu.com/p/",
-        rule: `
-            .TitleImage,
-            .Post-Main .Post-Header,
-            .Post-Main .Post-RichTextContainer {${__plugin__widthText}}
-            /* 广告弹框 */
-            .right-side {
-                display: none !important;
-            }
-            /* 特殊处理 */
-            .Post-SideActions {
-                right: 0;
-            }
-        `,
+        alias: '知乎',
+        rule: 
+`
+.TitleImage,
+.Post-Main .Post-Header,
+.Post-Main .Post-RichTextContainer {${__plugin__widthText}}
+/* 广告弹框 */
+.right-side {
+    display: none !important;
+}
+/* 特殊处理 */
+.Post-SideActions {
+    right: 0;
+}
+`,
     },
     github: {
         url: "https://github.com/",
-        rule: `
-            .new-discussion-timeline {${__plugin__widthText}}
-            .gutter-condensed > div:first-child,
-            .markdown-body {
-                width: 100%!important;
-                max-width: 100%!important;
-            }
-            .gutter-condensed > div:last-child {
-                display: none !important;
-            }
-        `,
+        alias: 'Github',
+        rule: 
+`
+.new-discussion-timeline {${__plugin__widthText}}
+.gutter-condensed > div:first-child,
+.markdown-body {
+    width: 100%!important;
+    max-width: 100%!important;
+}
+.gutter-condensed > div:last-child {
+    display: none !important;
+}
+`,
     },
 };
 

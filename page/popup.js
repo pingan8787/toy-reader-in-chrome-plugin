@@ -107,15 +107,18 @@ function initAddRule () {
     // 网站规则 - 添加操作
     $('#saveRuleButton').click(async function() {
         const urlText = $('#custom_rule_url').val();
+        const aliasText = $('#custom_rule_alias').val();
         const ruleText = $('#custom_rule_content').val();
         const hiddenText = $('#custom_rule_hidden').val();
         const curRule = {
             url: urlText,
             source: 'custom',
-            rule: `
-                ${ruleText} {${urlRuleText}}
-                ${hiddenText} {${urlRuleNone}}
-            `,
+            alias: aliasText,
+            rule: 
+`
+${ruleText} {${urlRuleText}}
+${hiddenText} {${urlRuleNone}}
+`,
             createTime: dayjs().format("YYYY-MM-DD HH:mm:ss")
         };
         const newRules = saveNewRule(curRule);
