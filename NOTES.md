@@ -145,3 +145,14 @@ www.imooc.com: {
 await asyncGetData();
 hljs.highlightAll();
 ```
+
+
+## manifest.json v3 配置 content_security_policy
+
+```js
+content_security_policy: {
+  // extension_pages: `script-src 'self' http://localhost:${port}; object-src 'self'`,
+  extension_pages: "script-src 'self'; object-src 'none'",
+  content_scripts: "script-src 'self'; object-src 'none'"
+}
+```

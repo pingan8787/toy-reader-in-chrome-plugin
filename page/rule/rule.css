@@ -43,14 +43,15 @@ body {
 }
 
 #body .rule-type-container ul li {
-  width: 360px;
+  width: 340px;
+  height: 300px;
   padding: 20px;
   text-decoration: none;
   display: inline-block;
   margin: 20px;
   transition: all 0.15s cubic-bezier(0.25, 0.8, 0.25, 1);
   cursor: pointer;
-  overflow: hidden;
+  overflow: auto;
   border-radius: 3px;
   box-shadow: 0 10px 40px -10px rgb(0 64 128 / 20%);
   position: relative;
@@ -67,6 +68,27 @@ body {
   margin-bottom: 8px;
 }
 
+
+#body .rule-type-container ul li #addRuleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  cursor: pointer;
+}
+
+#body .rule-type-container ul li #addRuleContainer span {
+  margin-top: 12px;
+  font-size: 16px;
+  color: #aaa;
+}
+
+#body .rule-type-container ul li #addRuleContainer img {
+  width: 60px;
+  height: 60px;
+}
+
 #body .rule-type-container ul .rule-name .rule-icon {
   width: 8px;
   height: 8px;
@@ -78,4 +100,14 @@ body {
 #body .rule-type-container ul pre code {
   height: 160px;
   overflow: auto;
+  cursor: text;
+}
+
+.forkMe {
+  width: 130px;
+  height: 130px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
 }

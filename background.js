@@ -33,6 +33,8 @@ chrome.contextMenus.onClicked.addListener(async function (info, tab) {
         function copyFun(args) {
             const { copyText } = args;
             const n = document.createElement("textarea");
+            n.style.width = 0;
+            n.style.height = 0;
             n.textContent = copyText;
             document.body.appendChild(n);
             n.select();
