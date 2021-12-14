@@ -17,9 +17,11 @@ const initCache = async () => {
     // 默认刚进来，列表为空，所以取默认配置的列表
     if(!(rules && rules[WebsiteRuleUrl])){
         rules[WebsiteRuleUrl] = JSON.stringify(urlRule);
-        await chrome.storage.local.set({[WebsiteRuleUrl]: rules});
+        await chrome.storage.local.set({[WebsiteRuleUrl]: JSON.stringify(urlRule)});
     }
-    const ruleList = JSON.parse(rules[WebsiteRuleUrl]);
+    const ruleList = rules[WebsiteRuleUrl] && typeof rules[WebsiteRuleUrl] === 'string' 
+        ? JSON.parse(rules[WebsiteRuleUrl]) 
+        : {};
     updateCountText('#ruleCount', Object.keys(ruleList).length);
     renderRuleList(ruleList);
 }
@@ -55,7 +57,7 @@ const renderRuleToPage = (select, list, iconColor = '#2E94B9') => {
                 <div class="rule-url">标识：${key}</div>
                 <div class="rule-url">网址：${url}</div>
                 ${createTimeStr}
-                <div class="rule-text">规则：<pre><code class="css">${rule}</code></pre></div>
+                <div class="rule-text">规则：<pre id="code-${key}"><img class="rule-editor-button" title="编辑" src="../assets/icon/icon-editor.png" onclick="editorRule('${key}')" /><code class="css">${rule}</code></pre></div>
             </li>
         `
     }
@@ -65,9 +67,14 @@ const renderRuleToPage = (select, list, iconColor = '#2E94B9') => {
 // 渲染规则数据
 const renderRuleList = rules => {
     const ruleObj = handleRuleList(rules);
-    console.log('[ruleObj]', ruleObj)
     renderRuleToPage('#ruleDefault', ruleObj.default);
     renderRuleToPage('#ruleCustom', ruleObj.custom, '#F0B775');
+}
+
+// 编辑代码
+const editorRule = source => {
+    console.log('[编辑的数据]',source)
+    alert('开发中')
 }
 
 

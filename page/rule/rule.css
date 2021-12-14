@@ -103,6 +103,20 @@ body {
   cursor: text;
 }
 
+#body .rule-type-container ul pre .rule-editor-button {
+  position: absolute;
+  right: 36px;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  display: none;
+}
+
+#body .rule-type-container ul pre:hover .rule-editor-button {
+  display: block;
+}
+
+
 .forkMe {
   width: 130px;
   height: 130px;

@@ -4,7 +4,8 @@ const { DefaultStyleFlag, DefaultDarkStyleFlag, WebsiteRuleUrl } = GlobalConstan
 const { getCurrentRule, getCurrentRuleCSS, resetCssByStyle, addCssByStyle, initRules } = GlobalUtils;
 
 // 读取本地已经缓存的 mode 模式
-const initMode = async (rules = urlRule) => {
+const initMode = async config => {
+    const { rules = urlRule } = config;
     const params = await chrome.storage.local.get("mode");
     // 本地没有保存规则的时候，才设置
     if (!params.mode) {
@@ -23,7 +24,7 @@ const initMode = async (rules = urlRule) => {
 }
 
 // 读取本地已经缓存的 isDarkMode 模式
-const initDarkMode = async () => {
+const initDarkMode = async config => {
     const params = await chrome.storage.local.get("isDarkMode");
     const { isDarkMode } = params;
     // 先清理掉样式，然后在根据是否启用来添加设置
@@ -36,12 +37,14 @@ const initDarkMode = async () => {
     }
 }
 
-// 读取本地已经缓存的网站规则
-const initRule = async () => {
-    const params = await chrome.storage.local.get([WebsiteRuleUrl]);
-    const rules = params[WebsiteRuleUrl];
-    const rulesList = rules && JSON.parse(rules);
-    return rulesList;
+/**
+ * 事件处理器，入参统一格式：
+ * params: 消息体
+ * rules: 规则体
+ */
+const eventHandle = {
+    mode: initMode,
+    isDarkMode: initDarkMode
 }
 
 // 初始化事件监听
@@ -49,12 +52,9 @@ const initMessageListener = (rules) => {
     chrome.runtime.onMessage.addListener(function(message, sender, sendResponse)
     {
         const { params = {} } = message;
-        const { type, value } = params;
-        if(type === 'mode') {
-            initMode(rules);
-        }else if(type === 'isDarkMode') {
-            initDarkMode(value);
-        }
+        const handle = eventHandle[params.type];
+        handle && handle({rules, params});
+
         setTimeout(function() {
              sendResponse({farewell: "ok"});//做出回应
         }, 1);
@@ -63,6 +63,14 @@ const initMessageListener = (rules) => {
         // https://blog.csdn.net/lamp_yang_3533/article/details/100174074?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.essearch_pc_relevant&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.essearch_pc_relevant
         return true
     });
+}
+
+// 读取本地已经缓存的网站规则
+const initRule = async () => {
+    const params = await chrome.storage.local.get([WebsiteRuleUrl]);
+    const rules = params[WebsiteRuleUrl];
+    const rulesList = rules && JSON.parse(rules);
+    return rulesList;
 }
 
 const isValidUrl = async () => {

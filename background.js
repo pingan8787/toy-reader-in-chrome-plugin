@@ -24,6 +24,7 @@ chrome.contextMenus.create({
     contexts: ['selection'], // 只有当选中文字时才会出现此右键菜单
 });
 
+// 处理复制链接
 chrome.contextMenus.onClicked.addListener(async function (info, tab) {
     const { selectionText, pageUrl } = info;
     const copyText = `[${selectionText}](${pageUrl})`;
@@ -51,10 +52,3 @@ chrome.contextMenus.onClicked.addListener(async function (info, tab) {
     // 注意不能使用location.href，因为location是属于background的window对象
     // chrome.tabs.create({url: 'https://www.baidu.com/s?ie=utf-8&wd=' + encodeURI(params.selectionText)});
 });
-
-function getCurrentPage () {
-    return {
-        window,
-        document
-    }
-}
